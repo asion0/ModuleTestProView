@@ -17,12 +17,18 @@ namespace ModuleTestProView
         {
             None,
             WriteSerialNumber,
+            ReadSerialNumber,
         }
 
         private static WorkingStatus workingStatus = WorkingStatus.None;
         public static void StartWriteSerialNumber()
         {
             workingStatus = WorkingStatus.WriteSerialNumber;
+        }
+
+        public static void StartReadSerialNumber()
+        {
+            workingStatus = WorkingStatus.ReadSerialNumber;
         }
 
         public BleModule()
@@ -129,6 +135,13 @@ namespace ModuleTestProView
             if (ModuleTestProfile.proViewTestProfile.functionType == ModuleTestProfile.FunctionType.TestOnly)
             {
                 r.reportType = WorkerReportParam.ReportType.ShowProgress;
+                r.output = "SN: " + ((emptySn) ? "[No Serial Number]" : GetSerialNumberString(sn));
+                p.bwConnect.ReportProgress(0, new WorkerReportParam(r));
+                return true;
+            }
+            else if(ModuleTestProfile.proViewTestProfile.functionType == ModuleTestProfile.FunctionType.SnReader)
+            {
+                r.reportType = WorkerReportParam.ReportType.ShowSerialNumber;
                 r.output = "SN: " + ((emptySn) ? "[No Serial Number]" : GetSerialNumberString(sn));
                 p.bwConnect.ReportProgress(0, new WorkerReportParam(r));
                 return true;
@@ -347,7 +360,8 @@ namespace ModuleTestProView
                 }
 
                 //Calibration doesn't need fixture.
-                if (ModuleTestProfile.proViewTestProfile.functionType != ModuleTestProfile.FunctionType.Calibration)
+                if (ModuleTestProfile.proViewTestProfile.functionType != ModuleTestProfile.FunctionType.Calibration &&
+                    ModuleTestProfile.proViewTestProfile.functionType != ModuleTestProfile.FunctionType.SnReader)
                 {
                     if (!IintialFixture(p, r))
                     {
@@ -388,13 +402,6 @@ namespace ModuleTestProView
                                 workingStatus = WorkingStatus.None;
                                 continue;
                             }
-
-                            //Set GPIO 10 to high
-                            //if (!SetGpio10(p, r, true))
-                            //{
-                            //    workingStatus = WorkingStatus.None;
-                            //    continue;
-                            //}
                         }
                         else if (ModuleTestProfile.proViewTestProfile.functionType == ModuleTestProfile.FunctionType.TestOnly)
                         {
@@ -407,6 +414,14 @@ namespace ModuleTestProView
                         else if (ModuleTestProfile.proViewTestProfile.functionType == ModuleTestProfile.FunctionType.Calibration)
                         {
                             if (!DoCalibration(p, r))
+                            {
+                                workingStatus = WorkingStatus.None;
+                                continue;
+                            }
+                        }
+                        else if (ModuleTestProfile.proViewTestProfile.functionType == ModuleTestProfile.FunctionType.SnReader)
+                        {
+                            if (!DoQuerySerialNumber(p, r))
                             {
                                 workingStatus = WorkingStatus.None;
                                 continue;

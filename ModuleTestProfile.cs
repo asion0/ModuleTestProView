@@ -31,6 +31,7 @@ namespace ModuleTestProView
             Production = 1,
             TestOnly = 2,
             Calibration = 3,
+            SnReader = 4,
         }
 
         public FunctionType functionType = FunctionType.Production;

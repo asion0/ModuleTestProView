@@ -31,18 +31,18 @@ namespace ModuleTestProView
             return value;
         }
 
-        public enum FunctionType
-        {
-            ModuleTest,
-            ResetTester,
-            OpenPortTester,
-            iCacheTester
-        }
+        //public enum FunctionType
+        //{
+        //    ModuleTest,
+        //    ResetTester,
+        //    OpenPortTester,
+        //    iCacheTester
+        //}
 
-        public static FunctionType functionType = FunctionType.ModuleTest;
-        public static void Init()
-        {
-            functionType = FunctionType.ModuleTest;
-        }
+        //public static FunctionType functionType = FunctionType.ModuleTest;
+        //public static void Init()
+        //{
+        //    functionType = FunctionType.ModuleTest;
+        //}
     }
 }

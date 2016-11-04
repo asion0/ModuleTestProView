@@ -83,6 +83,7 @@ namespace ModuleTestProView
         {
             BleConnected,
             ShowProgress,
+            ShowSerialNumber,
             BleGotMacAddress,
             UpdateSnrChart,
             ShowError,

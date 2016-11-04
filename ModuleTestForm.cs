@@ -21,7 +21,7 @@ namespace ModuleTestProView
         private void ModuleTestForm_Load(object sender, EventArgs e)
         {
             //TestSQLite();
-            Global.Init();
+            //Global.Init();
             this.Icon = Properties.Resources.ModuleTestProView;
             DoLogin();
         }
@@ -98,6 +98,23 @@ namespace ModuleTestProView
             return true;
         }
 
+        private bool SnReaderLogin()
+        {
+            if (Environment.GetEnvironmentVariable("sfxname") == null)
+            {
+                Login.loginInfo.currentPath = Environment.CurrentDirectory;
+            }
+            else
+            {   //For WinRar sfx package.
+                Login.loginInfo.currentPath = Path.GetDirectoryName(Environment.GetEnvironmentVariable("sfxname"));
+            }
+            Login.loginInfo.workFormNumber = "ProViewS3_SnReader" + DateTime.Now.ToString("yyyy-MM-dd"); ;
+            Login.loginInfo.backupDrive = null;
+
+            logReport = new LogReport(Login.loginInfo.workFormNumber, "Report.csv", "Login.csv");
+            return true;
+        }
+
         private void DoLogin()
         {
             switch (ModuleTestProfile.proViewTestProfile.functionType)
@@ -118,6 +135,10 @@ namespace ModuleTestProView
                     break;
                 case ModuleTestProfile.FunctionType.Calibration:
                     CalibrationLogin();
+                    logReport.AddLogin(DateTime.Now, 0, "", "");
+                    break;
+                case ModuleTestProfile.FunctionType.SnReader:
+                    SnReaderLogin();
                     logReport.AddLogin(DateTime.Now, 0, "", "");
                     break;
             }
@@ -165,6 +186,17 @@ namespace ModuleTestProView
                     nsPortLbl.Visible = false;
                     nsPortCmb.Visible = false;
                     break;
+                case ModuleTestProfile.FunctionType.SnReader:
+                    testBtn.Text = "Read Serial Number";
+                    productionPanel.Visible = false;
+                    logoPanel.BackColor = System.Drawing.Color.Orchid;
+                    logoPanel.Visible = true;
+                    logoLbl.Text = "ProView S3 SN Reader";
+                    this.Text = "ProView S3 SN Reader " + GetVersion();
+                    productionPanel.Visible = false;
+                    nsPortLbl.Visible = false;
+                    nsPortCmb.Visible = false;
+                    break;            
             }
         }
 
@@ -241,7 +273,8 @@ namespace ModuleTestProView
                 case TestStatus.NotConnect:
                     blePortCmb.Enabled = true;
                     nsPortCmb.Enabled = true;
-                    if (ModuleTestProfile.proViewTestProfile.functionType == ModuleTestProfile.FunctionType.Calibration)
+                    if (ModuleTestProfile.proViewTestProfile.functionType == ModuleTestProfile.FunctionType.Calibration ||
+                        ModuleTestProfile.proViewTestProfile.functionType == ModuleTestProfile.FunctionType.SnReader)
                     {
                         connectBtn.Enabled = (blePortCmb.SelectedIndex == -1) ? false : true;
                     }
@@ -272,7 +305,8 @@ namespace ModuleTestProView
                     connectBtn.Text = "Disconnect";
                     connectBtn.ForeColor = System.Drawing.Color.Red;
                     moduleName.ForeColor = System.Drawing.Color.Blue;
-                    if (ModuleTestProfile.proViewTestProfile.functionType == ModuleTestProfile.FunctionType.Calibration)
+                    if (ModuleTestProfile.proViewTestProfile.functionType == ModuleTestProfile.FunctionType.Calibration ||
+                        ModuleTestProfile.proViewTestProfile.functionType == ModuleTestProfile.FunctionType.SnReader)
                     {
                         testBtn.Enabled = true;
                     }
@@ -377,6 +411,11 @@ namespace ModuleTestProView
                 //Send BLE Command
                 BleModule.StartWriteSerialNumber();
             }
+            else if (ModuleTestProfile.proViewTestProfile.functionType == ModuleTestProfile.FunctionType.SnReader)
+            {
+                //Send BLE Command
+                BleModule.StartWriteSerialNumber();
+            }
             else
             {
                 bkTestWorker.RunWorkerAsync(testParam);
@@ -422,6 +461,12 @@ namespace ModuleTestProView
             if (r.reportType == WorkerReportParam.ReportType.ShowProgress)
             {
                 AddMessage(r.index, r.output);
+            }
+            else if (r.reportType == WorkerReportParam.ReportType.ShowSerialNumber)
+            {
+                AddMessage(r.index, r.output);
+                firstWork.Text = r.output;
+                firstWork.ForeColor = System.Drawing.Color.Blue;
             }
             else if (r.reportType == WorkerReportParam.ReportType.BleConnected)
             {
@@ -475,6 +520,10 @@ namespace ModuleTestProView
                 if (ModuleTestProfile.proViewTestProfile.functionType == ModuleTestProfile.FunctionType.Calibration)
                 {
                     AddMessage(r.index, "Calibration Reseted.");
+                }
+                else if (ModuleTestProfile.proViewTestProfile.functionType == ModuleTestProfile.FunctionType.SnReader)
+                {
+                    AddMessage(r.index, "Get SN Completed.");
                 }
                 else
                 {

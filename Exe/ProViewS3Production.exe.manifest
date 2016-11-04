@@ -53,14 +53,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ProViewS3Production.exe" size="563712">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ProViewS3Production.exe" size="564736">
       <assemblyIdentity name="ProViewS3Production" version="1.0.0.4" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>DTBnJaDA+KedbObPclYKmCegCRA=</dsig:DigestValue>
+        <dsig:DigestValue>I0OKmD7W/ZyrPal6+e1fu2QIFnk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -72,7 +72,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>3TNMrxjLpAASXZ9Webaq9c8urtQ=</dsig:DigestValue>
+        <dsig:DigestValue>HqnVsIZcDzH1QKEkdaJISo+88C0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -84,7 +84,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>hUpxM4rK9dIA1BxtfcxKgY/+v1Y=</dsig:DigestValue>
+        <dsig:DigestValue>VnunrJkcra5SxvH59LHF9Gv8kuY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -20,9 +20,16 @@ namespace ModuleTestProView
         static void Main()
         {
             //Thread.CurrentThread.CurrentUICulture = new CultureInfo("en"); 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ModuleTestForm());
+            try
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new ModuleTestForm());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
 
     }
